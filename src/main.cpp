@@ -2,6 +2,7 @@
 #include <QTRSensors.h>
 #include <SparkFun_TB6612.h>
 
+// Motor driver init
 #define AIN1 8 // Motor PINS
 #define BIN1 12
 #define AIN2 9
@@ -9,20 +10,18 @@
 #define PWMA 10
 #define PWMB 11
 #define STBY 99
-
-const int offsetA = 1; // Motor init
+const int offsetA = 1;
 const int offsetB = 1;
 Motor motor1 = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
 Motor motor2 = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
 
-
-QTRSensors qtr; // Sensor init
+// Sensor init
+QTRSensors qtr;
 const uint8_t SensorCount = 12;
 uint16_t sensorValues[SensorCount];
 
-void setup()
-{
-    pinMode(A0, INPUT); // Sensor PINS
+void calibrationSequence() { // Calibration function
+    pinMode(A0, INPUT); // Sensor PINS (It is needed for analog pins to work as digital)
     pinMode(A1, INPUT);
     pinMode(A2, INPUT);
     pinMode(A3, INPUT);
@@ -34,71 +33,63 @@ void setup()
     pinMode(5, INPUT);
     pinMode(6, INPUT);
     pinMode(7, INPUT);
-
     qtr.setTypeRC();
     qtr.setSensorPins((const uint8_t[]){A0, A1, A2, A3, A4, A5, 2, 3, 4, 5, 6, 7}, SensorCount);
-//  delay(500);
-// pinMode(LED_BUILTIN, OUTPUT);
-// digitalWrite(LED_BUILTIN, HIGH);
 
     for (uint16_t i = 0; i < 400; i++) // Calibration loop (400 iterations)
     {
         qtr.calibrate();
     }
-// digitalWrite(LED_BUILTIN, LOW);
-
-    Serial.begin(9600);
-
-    for (uint8_t i = 0; i < SensorCount; i++) // Prints minimum values from calibration loop
-    {
-        Serial.print(qtr.calibrationOn.minimum[i]);
-        Serial.print(' ');
-    }
-    Serial.println();
-
-    for (uint8_t i = 0; i < SensorCount; i++) // Prints maximum values from calibration loop
-    {
-        Serial.print(qtr.calibrationOn.maximum[i]);
-        Serial.print(' ');
-    }
-    Serial.println();
-    Serial.println();
-//  delay(1000);
 }
 
-uint16_t linePosition() { // Reads sensor values and returns position
-
-    uint16_t position = qtr.readLineBlack(sensorValues);
-
-    for (uint8_t i = 0; i < SensorCount; i++) // Prints sensor values
-    {
-        Serial.print(sensorValues[i]);
-        Serial.print('\t');
+void throttle(int16_t output) { // Throttle function
+    const int16_t baseSpeed = 50; // Base speed of the motors
+    const int16_t maxSpeed = 100; // Maximum speed of the motors
+    const int16_t minSpeed = -100; // Minimum speed of the motors
+    int16_t rightMotorSpeed = baseSpeed + output; // Calculates motor speed
+    int16_t leftMotorSpeed = baseSpeed - output;
+    if (rightMotorSpeed > maxSpeed) { // Limits the motor speed
+        rightMotorSpeed = maxSpeed;
     }
-    Serial.println(position);
-//  delay(250);
-    return position;
+    if (rightMotorSpeed < minSpeed) {
+        rightMotorSpeed = minSpeed;
+    }
+    if (leftMotorSpeed > maxSpeed) {
+        leftMotorSpeed = maxSpeed;
+    }
+    if (leftMotorSpeed < minSpeed) {
+        leftMotorSpeed = minSpeed;
+    }
+    motor1.drive(rightMotorSpeed); // Drives the motors
+    motor2.drive(rightMotorSpeed);
 }
 
-void linefollow() { // Line following algorithm
+void pidControl() { // PID algorithm
+        uint16_t position = qtr.readLineBlack(sensorValues); // Reads sensor values and calculates the position
+        int16_t error = position - 6000; // 6000 is the middle of the sensor array
+        int16_t proportional = 0;
+        int16_t integral = 0;
+        int16_t derivative = 0;
+        int16_t lastError = 0;
+        int16_t output = 0;
+        const float Kp = 0.2; // PID constants ********TO BE TUNED********
+        const float Ki = 0.2;
+        const float Kd = 0.2;
 
-    if (5000 < linePosition() and linePosition() < 8000) { // If line is in the middle, go straight
-        forward(motor1, motor2, 50);
-    }
-    else if (linePosition() > 9000) { // If line is on the right, turn left
-        motor2.drive(-25);
-        motor1.drive(50);
-    }
-    else if (linePosition() < 4000) { // If line is on the left, turn right
-        motor2.drive(50);
-        motor1.drive(-25);
-    }
-    else { // If line is lost, stop
-        brake(motor1, motor2);
-    }
+        while (true) { // PID loop
+            proportional = error;
+            integral += error;
+            derivative = error - lastError;
+            output = (proportional * Kp) + (integral * Ki) + (derivative * Kd); // PID equation
+            lastError = error;
+            position = qtr.readLineBlack(sensorValues); // Reads sensor values and updates the position
+            error = position - 6000;
+            throttle(output); // Throttles the motors
+        }
 }
 
-void loop() {
-    linePosition();
-    linefollow();
+int main() {
+    calibrationSequence();
+    pidControl();
+    return 0;
 }
