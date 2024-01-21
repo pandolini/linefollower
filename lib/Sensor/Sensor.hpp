@@ -12,7 +12,7 @@ private:
     const uint8_t PINS[12] = {A0, A1, A2, A3, A4, A5, 2, 3, 4, 5, 6, 7};
 
 public:
-    Sensor();
+    void initialize();
 
     void calibrate();
 

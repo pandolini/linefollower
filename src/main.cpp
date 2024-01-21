@@ -1,16 +1,18 @@
-#include <Arduino.h>
+#include "Arduino.h"
 #include "vector"
 #include "Sensor.hpp"
-#include "TableLoader.hpp"
+#include "Logic.hpp"
 
 Sensor sensor;
+Logic logic;
 uint16_t linePosition;
-std::vector<std::vector<int8_t>> lookupTable;
 
 void setup() {
-  TableLoader::load(&lookupTable);
+  sensor.initialize();
+  logic.initialize();
 }
 
 void loop() {
   linePosition = sensor.getPos();
+  auto output = logic.getOutput(linePosition);
 }

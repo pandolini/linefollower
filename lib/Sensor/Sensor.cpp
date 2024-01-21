@@ -1,6 +1,6 @@
 #include "Sensor.hpp"
 
-Sensor::Sensor() {
+void Sensor::initialize() {
     for (auto &&pin : PINS)
     {
         pinMode(pin, INPUT);
@@ -20,5 +20,5 @@ void Sensor::calibrate() {
 }
 
 uint16_t Sensor::getPos() {
-        return qtr.readLineBlack(sensorValues);
+        return qtr.readLineBlack(sensorValues)/100;
     }
