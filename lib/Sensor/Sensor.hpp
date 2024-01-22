@@ -9,7 +9,7 @@ private:
     QTRSensors qtr;
     const uint8_t SENSOR_COUNT = 12;
     uint16_t sensorValues[12];
-    const uint8_t PINS[12] = {A0, A1, A2, A3, A4, A5, 2, 3, 4, 5, 6, 7};
+    const uint8_t PINS[12] = {A0, 8, 9, A3, A4, A5, 2, 3, 4, 5, 6, 7};
 
 public:
     void initialize();
