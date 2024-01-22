@@ -1,40 +1,53 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <QTRSensors.h>
-#include <SparkFun_TB6612.h>
+#include "WemosMotorShieldESP32.h"
+#include "esp_log.h"
 
-// Motor driver init
-#define AIN1 8 // Motor PINS
-#define BIN1 12
-#define AIN2 9
-#define BIN2 13
-#define PWMA 10
-#define PWMB 11
-#define STBY 99
-const int offsetA = 1;
-const int offsetB = 1;
-Motor motor1 = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
-Motor motor2 = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
 
+//// Motor driver init
+WemosMotorShield motorController(I2C_NUM_0);
 // Sensor init
 QTRSensors qtr;
-const uint8_t SensorCount = 12;
+const uint8_t SensorCount = 17;
 uint16_t sensorValues[SensorCount];
 
 void calibrationSequence() { // Calibration function
-    pinMode(A0, INPUT); // Sensor PINS (It is needed for analog pins to work as digital)
-    pinMode(A1, INPUT);
-    pinMode(A2, INPUT);
-    pinMode(A3, INPUT);
-    pinMode(A4, INPUT);
-    pinMode(A5, INPUT);
-    pinMode(2, INPUT);
-    pinMode(3, INPUT);
+
+    // Setup I2C
+    i2c_config_t conf;
+    conf.mode = I2C_MODE_MASTER;
+    conf.sda_io_num = GPIO_NUM_21;
+    conf.scl_io_num = GPIO_NUM_22;
+    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.master.clk_speed = 100000;
+    i2c_param_config(I2C_NUM_0, &conf);
+    i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
+    i2c_set_timeout(I2C_NUM_0, 30000);
+
+
+
+    pinMode(2, INPUT); // Sensor PINS
     pinMode(4, INPUT);
     pinMode(5, INPUT);
-    pinMode(6, INPUT);
-    pinMode(7, INPUT);
+    pinMode(12, INPUT);
+    pinMode(13, INPUT);
+    pinMode(14, INPUT);
+    pinMode(15, INPUT);
+    pinMode(16, INPUT);
+    pinMode(17, INPUT);
+    pinMode(18, INPUT);
+    pinMode(19, INPUT);
+    pinMode(23, INPUT);
+    pinMode(25, INPUT);
+    pinMode(26, INPUT);
+    pinMode(27, INPUT);
+    pinMode(32, INPUT);
+    pinMode(33, INPUT);
+
     qtr.setTypeRC();
-    qtr.setSensorPins((const uint8_t[]) {A0, A1, A2, A3, A4, A5, 2, 3, 4, 5, 6, 7}, SensorCount);
+    qtr.setSensorPins((const uint8_t[]) {2, 4, 5, 12, 13, 14, 15, 16, 17, 18, 19, 23, 25, 26, 27, 32, 33}, SensorCount);
     delay(500);
 
     for (uint16_t i = 0; i < 400; i++) // Calibration loop (400 iterations)
@@ -44,8 +57,9 @@ void calibrationSequence() { // Calibration function
 }
 
 void throttle(int16_t output) { // Throttle function
-    const int16_t baseSpeed = 100; // Base speed of the motors
-    const int16_t maxSpeed = 160; // Maximum speed of the motors
+
+    const int16_t baseSpeed = 50; // Base speed of the motors
+    const int16_t maxSpeed = 100; // Maximum speed of the motors
     const int16_t minSpeed = 0; // Minimum speed of the motors
     int16_t rightMotorSpeed = baseSpeed + output; // Calculates motor speed
     int16_t leftMotorSpeed = baseSpeed - output;
@@ -61,8 +75,8 @@ void throttle(int16_t output) { // Throttle function
     if (leftMotorSpeed < minSpeed) {
         leftMotorSpeed = minSpeed;
     }
-    motor1.drive(rightMotorSpeed); // Drives the motors
-    motor2.drive(leftMotorSpeed);
+    motorController.setMotor(MOTOR_A, FORWARD, rightMotorSpeed); // Drives the motors
+    motorController.setMotor(MOTOR_B, BACKWARD, leftMotorSpeed); // Drives the motors
 }
 
 void pidControl() { // PID algorithm
@@ -89,9 +103,10 @@ void pidControl() { // PID algorithm
     }
 }
 
-int main() {
-    init(); // Arduino init
+void setup() {
     calibrationSequence();
+}
+
+void loop() {
     pidControl();
-    return 0;
 }
