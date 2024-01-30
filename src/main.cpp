@@ -2,6 +2,7 @@
 #include "vector"
 #include "Sensor.hpp"
 #include "Logic.hpp"
+#include "MotorControl.hpp"
 
 Sensor sensor;
 Logic logic;
@@ -14,5 +15,5 @@ void setup() {
 
 void loop() {
   linePosition = sensor.getPos();
-  auto output = logic.getOutput(linePosition);
+  setMotors(logic.getOutput(linePosition));
 }
