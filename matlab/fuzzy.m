@@ -1,27 +1,27 @@
 %% Oppsett
 fis = mamfis("Name", "LFR");
 
-fis = addInput(fis, [0, 240], "Name", "Avvik");
-fis = addInput(fis, [-240, 240], "Name", "DAvvik");
+fis = addInput(fis, [0, 160], "Name", "Avvik");
+fis = addInput(fis, [-160, 160], "Name", "DAvvik");
 
 fis = addOutput(fis, [-260, 260], "Name", "StyreRetning");
 
 %% Input medlemsfunksjoner
 
-fis = addMF(fis, "Avvik", "zmf", [40, 50], "Name", "SV");
-fis = addMF(fis, "Avvik", "trapmf", [40, 50, 75, 90], "Name", "LV");
-fis = addMF(fis, "Avvik", "trapmf", [75, 90, 150, 165], "Name", "INGEN");
-fis = addMF(fis, "Avvik", "trapmf", [150, 165, 190, 200], "Name", "LH");
-fis = addMF(fis, "Avvik", "smf", [190, 200], "Name", "SH");
+fis = addMF(fis, "Avvik", "zmf", [20, 35], "Name", "SV");
+fis = addMF(fis, "Avvik", "trapmf", [20, 35, 50, 70], "Name", "LV");
+fis = addMF(fis, "Avvik", "trapmf", [50, 70, 90, 110], "Name", "INGEN");
+fis = addMF(fis, "Avvik", "trapmf", [90, 110, 125, 140], "Name", "LH");
+fis = addMF(fis, "Avvik", "smf", [125, 140], "Name", "SH");
 
 plotmf(fis, "input", 1);
 %figure();
 
-fis = addMF(fis, "DAvvik", "zmf", [-200, -190], "Name", "SVS");
-fis = addMF(fis, "DAvvik", "trapmf", [-200, -190, -90, -75], "Name", "LVS");
-fis = addMF(fis, "DAvvik", "trapmf", [-90, -75, 75, 90], "Name", "INGEN");
-fis = addMF(fis, "DAvvik", "trapmf", [75, 90, 190, 200], "Name", "LHS");
-fis = addMF(fis, "DAvvik", "smf", [190, 200], "Name", "SHS");
+fis = addMF(fis, "DAvvik", "zmf", [-120, -85], "Name", "SVS");
+fis = addMF(fis, "DAvvik", "trapmf", [-120, -85, -50, -25], "Name", "LVS");
+fis = addMF(fis, "DAvvik", "trapmf", [-50, -25, 25, 50], "Name", "INGEN");
+fis = addMF(fis, "DAvvik", "trapmf", [25, 50, 85, 120], "Name", "LHS");
+fis = addMF(fis, "DAvvik", "smf", [85, 120], "Name", "SHS");
 
 plotmf(fis, "input", 2);
 %figure();
@@ -73,10 +73,11 @@ regler = [
 fis = addRule(fis, regler);
 
 gensurf(fis);
+%% 
 
 Step = 1;
-E = 0:Step:240;
-CE = -240:Step:240;
+E = 0:Step:160;
+CE = -160:Step:160;
 N = length(E);
 LookUpTableData = zeros(N);
 for i=1:length(E)

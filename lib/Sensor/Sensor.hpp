@@ -7,9 +7,9 @@
 class Sensor {
 private:
     QTRSensors qtr;
-    const uint8_t SENSOR_COUNT = 12;
-    uint16_t sensorValues[12];
-    const uint8_t PINS[12] = {A0, 8, 9, A3, A4, A5, 2, 3, 4, 5, 6, 7};
+    const uint8_t SENSOR_COUNT = 17;
+    uint16_t sensorValues[17];
+    const uint8_t PINS[17] = {4,5,12,14,13,16,17,18,19,21,22,23,25,26,27,32,33};
 
 public:
     void initialize();

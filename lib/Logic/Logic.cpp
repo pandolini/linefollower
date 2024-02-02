@@ -9,6 +9,9 @@ void Logic::initialize() {
 
 int8_t Logic::getOutput(uint16_t linePosition) {
     deltaPosition = linePosition - previousPosition + deltaOffset;
+    if (deltaPosition < 0) {
+        deltaPosition = 0;
+    }
     previousPosition = linePosition;
     return lookupTable[linePosition][deltaPosition];
 }

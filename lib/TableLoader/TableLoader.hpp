@@ -2,32 +2,28 @@
 #define LINEFOLLOWER_TABLELOADER_HPP
 
 #include "Arduino.h"
-#include "LittleFS.h"
+#include "Spiffs.h"
 
 void loadTable(std::vector<std::vector<int8_t>>* table) {
-    if (!LittleFS.begin()) {
+    if (!SPIFFS.begin()) {
+        Serial.print("Error starting LittleFS");
         return;
     }
 
-    File file = LittleFS.open("/table.csv");
+    File file = SPIFFS.open("/table.csv");
     if (!file){
+        Serial.println("Error loading table.csv");
         return;
     }
 
     while (file.available()) {
         std::vector<int8_t> row;
         auto line = file.readStringUntil(13);
-        if (line == NULL) {
-            line = file.readStringUntil('\n');
-            if (line == NULL) {
-                break;
-            }
-        }
-        while (line.length() != 0) {
+        while (line.length() >= 3) {
             auto index = line.indexOf(',');
             if (index == -1) {
                 row.push_back(line.toInt());
-                return;
+                break;
             }
             auto value = line.substring(0, index);
             line.remove(0, index+1);
@@ -35,7 +31,6 @@ void loadTable(std::vector<std::vector<int8_t>>* table) {
         }
         table->push_back(row);
     }
-
     file.close();
 }
 
