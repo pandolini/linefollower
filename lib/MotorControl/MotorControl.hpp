@@ -18,18 +18,16 @@ int8_t rightOffset = 1;
 Motor rightMotor(AIN1,AIN2,PWMA, leftOffset, STBY);
 Motor leftMotor(BIN1, BIN2, PWMB, rightOffset, STBY);
 
-int16_t velocity = 750;
-int16_t bilBredde = 60;
-int16_t radius = 11;
+int16_t baseSpeed = 125;
+float scaleFactor = 0.5;
 float leftWheelSpeed;
 float rightWheelSpeed;
 
 void setMotors(int8_t input) {
-    float newInput = input / 10.0;
-    leftWheelSpeed = ((float)velocity - newInput * (float)bilBredde / 2.0) / (float)radius;
-    rightWheelSpeed = ((float)velocity + newInput * (float)bilBredde / 2.0) / (float)radius;
-    leftMotor.drive(leftWheelSpeed);
-    rightMotor.drive(rightWheelSpeed);
+    leftWheelSpeed = baseSpeed - input;
+    rightWheelSpeed = baseSpeed + input;
+    leftMotor.drive(leftWheelSpeed*scaleFactor);
+    rightMotor.drive(rightWheelSpeed*scaleFactor);
 }
 
 #endif

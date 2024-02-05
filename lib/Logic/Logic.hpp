@@ -9,7 +9,7 @@ private:
     std::vector<std::vector<int8_t>> lookupTable;
     int16_t previousPosition;
     int16_t deltaPosition;
-    const int16_t deltaOffset = 121;
+    const int16_t deltaOffset = 140;
 
 public:
     void initialize();

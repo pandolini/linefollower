@@ -2,9 +2,9 @@
 fis = mamfis("Name", "LFR");
 
 fis = addInput(fis, [0, 160], "Name", "Avvik");
-fis = addInput(fis, [-160, 160], "Name", "DAvvik");
+fis = addInput(fis, [-140, 140], "Name", "DAvvik");
 
-fis = addOutput(fis, [-260, 260], "Name", "StyreRetning");
+fis = addOutput(fis, [-150, 150], "Name", "StyreRetning");
 
 %% Input medlemsfunksjoner
 
@@ -28,11 +28,11 @@ plotmf(fis, "input", 2);
 
 %% Output medlemsfunksjoner
 
-fis = addMF(fis, "StyreRetning", "zmf", [-200, -150], "Name", "SVS");
-fis = addMF(fis, "StyreRetning", "trapmf", [-200, -150, -100, -50], "Name", "LVS");
-fis = addMF(fis, "StyreRetning", "trapmf", [-100, -50, 50, 100], "Name", "INGEN");
-fis = addMF(fis, "StyreRetning", "trapmf", [50, 100, 150, 200], "Name", "LHS");
-fis = addMF(fis, "StyreRetning", "smf", [150, 200], "Name", "SHS");
+fis = addMF(fis, "StyreRetning", "zmf", [-100, -80], "Name", "SVS");
+fis = addMF(fis, "StyreRetning", "trapmf", [-100, -80, -50, -30], "Name", "LVS");
+fis = addMF(fis, "StyreRetning", "trapmf", [-50, -30, 30, 50], "Name", "INGEN");
+fis = addMF(fis, "StyreRetning", "trapmf", [30, 50, 80, 100], "Name", "LHS");
+fis = addMF(fis, "StyreRetning", "smf", [80, 100], "Name", "SHS");
 
 plotmf(fis, "output", 1);
 %figure();
@@ -77,7 +77,7 @@ gensurf(fis);
 
 Step = 1;
 E = 0:Step:160;
-CE = -160:Step:160;
+CE = -140:Step:140;
 N = length(E);
 LookUpTableData = zeros(N);
 for i=1:length(E)
