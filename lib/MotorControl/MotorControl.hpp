@@ -24,10 +24,16 @@ float leftWheelSpeed;
 float rightWheelSpeed;
 
 void setMotors(int8_t input) {
-    leftWheelSpeed = baseSpeed - input;
-    rightWheelSpeed = baseSpeed + input;
-    leftMotor.drive(leftWheelSpeed*scaleFactor);
-    rightMotor.drive(rightWheelSpeed*scaleFactor);
+    leftWheelSpeed = (int)(baseSpeed - 2*input)*scaleFactor;
+    rightWheelSpeed = (int)(baseSpeed + 2*input)*scaleFactor;
+    if (leftWheelSpeed < 0) {
+        leftWheelSpeed = 0;
+    }
+    if (rightWheelSpeed < 0) {
+        rightWheelSpeed = 0;
+    }
+    leftMotor.drive(leftWheelSpeed);
+    rightMotor.drive(rightWheelSpeed);
 }
 
 #endif
