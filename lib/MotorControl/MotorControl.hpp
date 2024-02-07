@@ -19,13 +19,14 @@ Motor rightMotor(AIN1, AIN2, PWMA, leftOffset, STBY);
 Motor leftMotor(BIN1, BIN2, PWMB, rightOffset, STBY);
 
 int16_t baseSpeed = 125;
-float scaleFactor = 0.5;
+float baseScaleFactor = 0.6;
+float inputScaleFactor = 1.0;
 float leftWheelSpeed;
 float rightWheelSpeed;
 
 void setMotors(int8_t input) {
-    leftWheelSpeed = (int)(baseSpeed - 2*input)*scaleFactor;
-    rightWheelSpeed = (int)(baseSpeed + 2*input)*scaleFactor;
+    leftWheelSpeed = (int)(baseSpeed - inputScaleFactor*input)*baseScaleFactor;
+    rightWheelSpeed = (int)(baseSpeed + inputScaleFactor*input)*baseScaleFactor;
     if (leftWheelSpeed < 0) {
         leftWheelSpeed = 0;
     }

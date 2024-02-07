@@ -29,9 +29,9 @@ plotmf(fis, "input", 2);
 %% Output medlemsfunksjoner
 
 fis = addMF(fis, "StyreRetning", "zmf", [-100, -80], "Name", "SVS");
-fis = addMF(fis, "StyreRetning", "trapmf", [-100, -80, -50, -30], "Name", "LVS");
-fis = addMF(fis, "StyreRetning", "trapmf", [-50, -30, 30, 50], "Name", "INGEN");
-fis = addMF(fis, "StyreRetning", "trapmf", [30, 50, 80, 100], "Name", "LHS");
+fis = addMF(fis, "StyreRetning", "trapmf", [-100, -80, -40, -20], "Name", "LVS");
+fis = addMF(fis, "StyreRetning", "trapmf", [-40, -20, 20, 40], "Name", "INGEN");
+fis = addMF(fis, "StyreRetning", "trapmf", [20, 40, 80, 100], "Name", "LHS");
 fis = addMF(fis, "StyreRetning", "smf", [80, 100], "Name", "SHS");
 
 plotmf(fis, "output", 1);
