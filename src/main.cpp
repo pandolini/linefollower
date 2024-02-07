@@ -1,97 +1,51 @@
 #include <Arduino.h>
 #include <QTRSensors.h>
-#include <SparkFun_TB6612.h>
+#include "MotorController.hpp"
 
-// Motor driver init
-#define AIN1 8 // Motor PINS
-#define BIN1 12
-#define AIN2 9
-#define BIN2 13
-#define PWMA 10
-#define PWMB 11
-#define STBY 99
-const int offsetA = 1;
-const int offsetB = 1;
-Motor motor1 = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
-Motor motor2 = Motor(BIN1, BIN2, PWMB, offsetB, STBY);
-
-// Sensor init
+MotorController motorController;
 QTRSensors qtr;
-const uint8_t SensorCount = 12;
+const uint8_t SensorCount = 15;
 uint16_t sensorValues[SensorCount];
 
-void calibrationSequence() { // Calibration function
-    pinMode(A0, INPUT); // Sensor PINS (It is needed for analog pins to work as digital)
-    pinMode(A1, INPUT);
-    pinMode(A2, INPUT);
-    pinMode(A3, INPUT);
-    pinMode(A4, INPUT);
-    pinMode(A5, INPUT);
-    pinMode(2, INPUT);
-    pinMode(3, INPUT);
-    pinMode(4, INPUT);
-    pinMode(5, INPUT);
-    pinMode(6, INPUT);
-    pinMode(7, INPUT);
+void calibrationSequence() {
     qtr.setTypeRC();
-    qtr.setSensorPins((const uint8_t[]) {A0, A1, A2, A3, A4, A5, 2, 3, 4, 5, 6, 7}, SensorCount);
+    qtr.setSensorPins((const uint8_t[]){5, 14, 13, 25, 16, 17, 18, 19, 21, 22, 23, 26, 27, 32, 33}, SensorCount);
     delay(500);
 
-    for (uint16_t i = 0; i < 400; i++) // Calibration loop (400 iterations)
+    for (uint16_t i = 0; i < 400; i++)
     {
         qtr.calibrate();
     }
 }
 
-void throttle(int16_t output) { // Throttle function
-    const int16_t baseSpeed = 100; // Base speed of the motors
-    const int16_t maxSpeed = 160; // Maximum speed of the motors
-    const int16_t minSpeed = 0; // Minimum speed of the motors
-    int16_t rightMotorSpeed = baseSpeed + output; // Calculates motor speed
-    int16_t leftMotorSpeed = baseSpeed - output;
-    if (rightMotorSpeed > maxSpeed) { // Limits the motor speed
-        rightMotorSpeed = maxSpeed;
-    }
-    if (rightMotorSpeed < minSpeed) {
-        rightMotorSpeed = minSpeed;
-    }
-    if (leftMotorSpeed > maxSpeed) {
-        leftMotorSpeed = maxSpeed;
-    }
-    if (leftMotorSpeed < minSpeed) {
-        leftMotorSpeed = minSpeed;
-    }
-    motor1.drive(rightMotorSpeed); // Drives the motors
-    motor2.drive(leftMotorSpeed);
-}
-
-void pidControl() { // PID algorithm
-    uint16_t position = qtr.readLineBlack(sensorValues); // Reads sensor values and calculates the position
-    int16_t error = position - 5500; // 5500 is the middle of the sensor array
+void pidControl() {
+    uint16_t position = qtr.readLineBlack(sensorValues);
+    int16_t error = position - 5500;
     int16_t proportional = 0;
     int16_t integral = 0;
     int16_t derivative = 0;
     int16_t lastError = 0;
     int16_t output = 0;
-    const double Kp = 0.10000; // PID constants ********TO BE TUNED********
+    const double Kp = 0.01500;
     const double Ki = 0.00000;
-    const double Kd = 0.02500;
+    const double Kd = 0.03750;
 
-    while (true) { // PID loop
+    while (true) {// PID loop
         proportional = error;
         integral += error;
         derivative = error - lastError;
-        output = (proportional * Kp) + (integral * Ki) + (derivative * Kd); // PID equation
+        output = (proportional * Kp) + (integral * Ki) + (derivative * Kd);
         lastError = error;
-        position = qtr.readLineBlack(sensorValues); // Reads sensor values and updates the position
+        position = qtr.readLineBlack(sensorValues);
         error = position - 5500;
-        throttle(output); // Throttles the motors
+        motorController.throttle(output);
     }
 }
 
-int main() {
-    init(); // Arduino init
+void setup() {
     calibrationSequence();
+}
+
+void loop() {
     pidControl();
-    return 0;
 }
