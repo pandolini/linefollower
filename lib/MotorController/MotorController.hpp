@@ -2,6 +2,7 @@
 #define MOTORCONTROLLER_HPP
 
 #include <Arduino.h>
+#include <Wire.h>
 #include "WemosMotorShieldESP32.h"
 #include "esp_log.h"
 

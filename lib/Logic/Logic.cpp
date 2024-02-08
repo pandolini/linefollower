@@ -1,7 +1,7 @@
 
 #include "Logic.hpp"
 
-Logic::Logic(double Kp, double Ki, double Kd) : Kp_(Kp), Ki_(Ki), Kd_(Kd), motorController(0, 2) {
+Logic::Logic(double Kp, double Ki, double Kd) : Kp_(Kp), Ki_(Ki), Kd_(Kd) {
 }
 
 void Logic::pidControl(uint16_t sensorPosition) {
