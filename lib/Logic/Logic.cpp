@@ -1,29 +1,18 @@
 
 #include "Logic.hpp"
 
-Logic::Logic(): motorController(0, 2){
+Logic::Logic(double Kp, double Ki, double Kd) : Kp_(Kp), Ki_(Ki), Kd_(Kd), motorController(0, 2) {
 }
 
 void Logic::pidControl(uint16_t sensorPosition) {
-    uint16_t position = sensorPosition;
-    int16_t error = position - 5500;
-    int16_t proportional = 0;
-    int16_t integral = 0;
-    int16_t derivative = 0;
-    int16_t lastError = 0;
-    int16_t output = 0;
-    const double Kp = 0.01500;
-    const double Ki = 0.00000;
-    const double Kd = 0.03750;
-
-    while (true) {// PID loop
+    while (true) {
+        position = sensorPosition;
+        error = position - 7500;
         proportional = error;
         integral += error;
         derivative = error - lastError;
-        output = (proportional * Kp) + (integral * Ki) + (derivative * Kd);
-        lastError = error;
-        position = sensorPosition;
-        error = position - 5500;
+        output = (proportional * Kp_) + (integral * Ki_) + (derivative * Kd_);
         motorController.throttle(output);
+        lastError = error;
     }
 }
