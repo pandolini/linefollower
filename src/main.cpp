@@ -1,25 +1,12 @@
 #include <Arduino.h>
-#include <QTRSensors.h>
+#include "Sensor.hpp"
 #include "MotorController.hpp"
 
+Sensor sensor;
 MotorController motorController;
-QTRSensors qtr;
-const uint8_t SensorCount = 15;
-uint16_t sensorValues[SensorCount];
-
-void calibrationSequence() {
-    qtr.setTypeRC();
-    qtr.setSensorPins((const uint8_t[]){5, 14, 13, 25, 16, 17, 18, 19, 21, 22, 23, 26, 27, 32, 33}, SensorCount);
-    delay(500);
-
-    for (uint16_t i = 0; i < 400; i++)
-    {
-        qtr.calibrate();
-    }
-}
 
 void pidControl() {
-    uint16_t position = qtr.readLineBlack(sensorValues);
+    uint16_t position = sensor.getLinePosition();
     int16_t error = position - 5500;
     int16_t proportional = 0;
     int16_t integral = 0;
@@ -36,14 +23,14 @@ void pidControl() {
         derivative = error - lastError;
         output = (proportional * Kp) + (integral * Ki) + (derivative * Kd);
         lastError = error;
-        position = qtr.readLineBlack(sensorValues);
+        position = sensor.getLinePosition();
         error = position - 5500;
         motorController.throttle(output);
     }
 }
 
 void setup() {
-    calibrationSequence();
+    sensor.calibrate();
 }
 
 void loop() {
