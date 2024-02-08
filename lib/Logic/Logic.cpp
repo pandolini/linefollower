@@ -1,7 +1,7 @@
 
 #include "Logic.hpp"
 
-Logic::Logic() {
+Logic::Logic(): motorController(0, 2){
 }
 
 void Logic::pidControl(uint16_t sensorPosition) {

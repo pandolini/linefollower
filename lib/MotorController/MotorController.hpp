@@ -1,30 +1,23 @@
 #ifndef MOTORCONTROLLER_HPP
 #define MOTORCONTROLLER_HPP
 
-#include <SparkFun_TB6612.h>
+#include <Arduino.h>
 
 class MotorController {
 public:
-    MotorController();
+    MotorController(int motor_1_pin, int motor_2_pin);
 
     void throttle(int16_t output);
 
 private:
-    Motor motor1;
-    Motor motor2;
     int16_t constrainSpeed(int16_t speed);
+    void drive(int motor, int16_t speed);
 
-    static const int AIN1 = 95;
-    static const int BIN1 = 96;
-    static const int AIN2 = 97;
-    static const int BIN2 = 98;
-    static const int STBY = 99;
-    static const int OFFSET = 1;
-    static const int PWMA = 0;
-    static const int PWMB = 2;
+    int motor1;
+    int motor2;
 
     const int16_t baseSpeed = 100;
-    const int16_t maxSpeed = 200;
+    const int16_t maxSpeed = 200; // 255 is the absolute maximum
     const int16_t minSpeed = 0;
 };
 
