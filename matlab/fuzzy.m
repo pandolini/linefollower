@@ -10,7 +10,7 @@ fis = addOutput(fis, [-150, 150], "Name", "StyreRetning");
 
 fis = addMF(fis, "LinjePos", "zmf", [20, 35], "Name", "SV");
 fis = addMF(fis, "LinjePos", "trapmf", [20, 35, 50, 70], "Name", "LV");
-fis = addMF(fis, "LinjePos", "trapmf", [50, 70, 90, 110], "Name", "INGEN");
+fis = addMF(fis, "LinjePos", "trapmf", [50, 70, 90, 110], "Name", "MIDTEN");
 fis = addMF(fis, "LinjePos", "trapmf", [90, 110, 125, 140], "Name", "LH");
 fis = addMF(fis, "LinjePos", "smf", [125, 140], "Name", "SH");
 
@@ -24,13 +24,13 @@ fis = addMF(fis, "DLinjePos", "trapmf", [25, 50, 85, 120], "Name", "LHS");
 fis = addMF(fis, "DLinjePos", "smf", [85, 120], "Name", "SHS");
 
 plotmf(fis, "input", 2);
-%figure();
+figure();
 
 %% Output medlemsfunksjoner
 
 fis = addMF(fis, "StyreRetning", "zmf", [-100, -80], "Name", "SVS");
 fis = addMF(fis, "StyreRetning", "trapmf", [-100, -80, -40, -20], "Name", "LVS");
-fis = addMF(fis, "StyreRetning", "trapmf", [-40, -20, 20, 40], "Name", "INGEN");
+fis = addMF(fis, "StyreRetning", "trapmf", [-40, -20, 20, 40], "Name", "MIDTEN");
 fis = addMF(fis, "StyreRetning", "trapmf", [20, 40, 80, 100], "Name", "LHS");
 fis = addMF(fis, "StyreRetning", "smf", [80, 100], "Name", "SHS");
 
@@ -42,31 +42,31 @@ plotmf(fis, "output", 1);
 regler = [
     "If LinjePos is SV and DLinjePos is INGEN then StyreRetning is SVS";
     "If LinjePos is LV and DLinjePos is INGEN then StyreRetning is LVS";
-    "If LinjePos is INGEN and DLinjePos is INGEN then StyreRetning is INGEN";
+    "If LinjePos is MIDTEN and DLinjePos is INGEN then StyreRetning is MIDTEN";
     "If LinjePos is LH and DLinjePos is INGEN then StyreRetning is LHS";
     "If LinjePos is SH and DLinjePos is INGEN then StyreRetning is SHS";
     
     "If LinjePos is SV and DLinjePos is LVS then StyreRetning is SVS";
     "If LinjePos is LV and DLinjePos is LVS then StyreRetning is LVS";
-    "If LinjePos is INGEN and DLinjePos is LVS then StyreRetning is INGEN";
+    "If LinjePos is MIDTEN and DLinjePos is LVS then StyreRetning is MIDTEN";
     "If LinjePos is LH and DLinjePos is LVS then StyreRetning is LHS";
     "If LinjePos is SH and DLinjePos is LVS then StyreRetning is SHS";
     
     "If LinjePos is SV and DLinjePos is SVS then StyreRetning is SVS";
     "If LinjePos is LV and DLinjePos is SVS then StyreRetning is SVS";
-    "If LinjePos is INGEN and DLinjePos is SVS then StyreRetning is LVS";
+    "If LinjePos is MIDTEN and DLinjePos is SVS then StyreRetning is LVS";
     "If LinjePos is LH and DLinjePos is SVS then StyreRetning is LVS";
     "If LinjePos is SH and DLinjePos is SVS then StyreRetning is LVS";
     
     "If LinjePos is SV and DLinjePos is LHS then StyreRetning is SVS";
     "If LinjePos is LV and DLinjePos is LHS then StyreRetning is LVS";
-    "If LinjePos is INGEN and DLinjePos is LHS then StyreRetning is INGEN";
+    "If LinjePos is MIDTEN and DLinjePos is LHS then StyreRetning is MIDTEN";
     "If LinjePos is LH and DLinjePos is LHS then StyreRetning is LHS";
     "If LinjePos is SH and DLinjePos is LHS then StyreRetning is SHS";
     
     "If LinjePos is SV and DLinjePos is SHS then StyreRetning is LHS";
     "If LinjePos is LV and DLinjePos is SHS then StyreRetning is LHS";
-    "If LinjePos is INGEN and DLinjePos is SHS then StyreRetning is LHS";
+    "If LinjePos is MIDTEN and DLinjePos is SHS then StyreRetning is LHS";
     "If LinjePos is LH and DLinjePos is SHS then StyreRetning is SHS";
     "If LinjePos is SH and DLinjePos is SHS then StyreRetning is SHS";];
 
