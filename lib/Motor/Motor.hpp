@@ -16,8 +16,7 @@
 
 class Motor {
 public:
-    Motor(uint8_t motor, uint32_t frequency);
-    void setfrequency(uint32_t frequency);
+    Motor(uint8_t motor);
 	void setmotor(uint8_t operation, float pwm_value);
 
 private:
