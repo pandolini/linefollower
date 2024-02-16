@@ -2,9 +2,7 @@
 #define MOTORCONTROLLER_HPP
 
 #include <Arduino.h>
-#include <Wire.h>
-#include "WemosMotorShieldESP32.h"
-#include "esp_log.h"
+#include "Motor.hpp"
 
 class MotorController {
 public:
@@ -14,13 +12,14 @@ public:
 
 private:
     int16_t constrainSpeed(int16_t speed);
-    void drive(motor_num_t motor, MotorDirection direction, int16_t speed);
+    int16_t direction(int16_t output);
 
-    WemosMotorShield motorShield;
+    Motor motor1;
+    Motor motor2;
 
-    const int16_t baseSpeed = 100;
-    const int16_t maxSpeed = 200; // 255 is the absolute maximum
-    const int16_t minSpeed = 0;
+    const int16_t baseSpeed = 75;
+    const int16_t maxSpeed = 100; // 255 is the absolute maximum
+    const int16_t minSpeed = -100;
 };
 
 #endif
