@@ -4,7 +4,7 @@
 
 void Logic::initialize() {
     loadTable(&lookupTable);
-    previousPosition = 120;
+    previousPosition = 70;
     deltaPosition = 0;
 }
 
