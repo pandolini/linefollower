@@ -1,7 +1,7 @@
 %% Oppsett
 fis = mamfis("Name", "LFR");
 
-fis = addInput(fis, [0, 160], "Name", "LinjePos");
+fis = addInput(fis, [0, 140], "Name", "LinjePos");
 fis = addInput(fis, [-140, 140], "Name", "DLinjePos");
 
 fis = addOutput(fis, [-150, 150], "Name", "StyreRetning");
@@ -10,9 +10,9 @@ fis = addOutput(fis, [-150, 150], "Name", "StyreRetning");
 
 fis = addMF(fis, "LinjePos", "zmf", [20, 35], "Name", "SV");
 fis = addMF(fis, "LinjePos", "trapmf", [20, 35, 50, 70], "Name", "LV");
-fis = addMF(fis, "LinjePos", "trapmf", [50, 70, 90, 110], "Name", "MIDTEN");
-fis = addMF(fis, "LinjePos", "trapmf", [90, 110, 125, 140], "Name", "LH");
-fis = addMF(fis, "LinjePos", "smf", [125, 140], "Name", "SH");
+fis = addMF(fis, "LinjePos", "trapmf", [50, 60, 80, 90], "Name", "MIDTEN");
+fis = addMF(fis, "LinjePos", "trapmf", [80, 90, 105, 120], "Name", "LH");
+fis = addMF(fis, "LinjePos", "smf", [105, 120], "Name", "SH");
 
 plotmf(fis, "input", 1);
 figure();
@@ -76,7 +76,7 @@ gensurf(fis);
 %% 
 
 Step = 1;
-E = 0:Step:160;
+E = 0:Step:140;
 CE = -140:Step:140;
 N = length(E);
 LookUpTableData = zeros(N);
