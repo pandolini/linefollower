@@ -8,7 +8,7 @@
 
 void loadTable(std::vector<std::vector<int8_t>>* table) {
     if (!SPIFFS.begin()) {
-        Serial.print("Error starting LittleFS");
+        Serial.println("Error starting LittleFS");
         return;
     }
 
