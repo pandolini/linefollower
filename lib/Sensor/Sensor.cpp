@@ -2,12 +2,12 @@
 #include "Sensor.hpp"
 
 void Sensor::initialize() {
-    for (auto&& pin : PINS) {
+    for (auto&& pin : sensorPins) {
         pinMode(pin, INPUT);
     }
 
     qtr.setTypeRC();
-    qtr.setSensorPins(PINS, SENSOR_COUNT);
+    qtr.setSensorPins(sensorPins, sensorCount);
 
     calibrate();
 }
