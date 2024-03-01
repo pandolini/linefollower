@@ -6,13 +6,18 @@
 #include "SPIFFS.h"
 #include "vector"
 
-void loadTable(std::vector<std::vector<int8_t>>* table) {
+void loadTable(std::vector<std::vector<int8_t>>* tableP, std::vector<std::vector<int8_t>>* tableD) {
     if (!SPIFFS.begin()) {
         Serial.println("Error starting LittleFS");
         return;
     }
 
-    File file = SPIFFS.open("/table.csv");
+    loadFile("/tableP.csv", tableP);
+    loadFile("/tableD.csv", tableD);
+}
+
+void loadFile(std::string fileName, std::vector<std::vector<int8_t>>* table) {
+    File file = SPIFFS.open(fileName.c_str());
     if (!file) {
         Serial.println("Error loading table.csv");
         return;
