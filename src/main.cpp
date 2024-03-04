@@ -9,11 +9,11 @@ Logic logic;
 uint16_t linePosition;
 
 void setup() {
-    sensor.initialize();
+    sensor.calibrate();
     logic.initialize();
 }
 
 void loop() {
-    linePosition = sensor.getPos();
+    linePosition = sensor.getLinePosition();
     setMotors(logic.getOutput(linePosition));
 }
