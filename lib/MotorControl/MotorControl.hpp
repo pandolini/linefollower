@@ -4,13 +4,13 @@
 
 #include "SparkFun_TB6612.h"
 
-int8_t AIN1 = 97;
-int8_t BIN1 = 98;
-int8_t AIN2 = 99;
-int8_t BIN2 = 100;
-int8_t PWMA = 0;
-int8_t PWMB = 2;
-int8_t STBY = 101;
+int8_t AIN1 = 1;
+int8_t BIN1 = 4;
+int8_t AIN2 = 12;
+int8_t BIN2 = 15;
+int8_t PWMA = 2;
+int8_t PWMB = 0;
+int8_t STBY = 101; //Not in use
 
 int8_t leftOffset = 1;
 int8_t rightOffset = 1;
