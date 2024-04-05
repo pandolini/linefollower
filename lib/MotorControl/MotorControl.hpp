@@ -8,15 +8,15 @@ int8_t AIN1 = 1;
 int8_t BIN1 = 4;
 int8_t AIN2 = 12;
 int8_t BIN2 = 15;
-int8_t PWMA = 2;
-int8_t PWMB = 0;
+int8_t PWMA = 0;
+int8_t PWMB = 2;
 int8_t STBY = 101; //Not in use
 
-int8_t leftOffset = 1;
-int8_t rightOffset = 1;
+int8_t leftOffset = -1;
+int8_t rightOffset = -1;
 
-Motor rightMotor(AIN1, AIN2, PWMA, leftOffset, STBY);
-Motor leftMotor(BIN1, BIN2, PWMB, rightOffset, STBY);
+Motor leftMotor(AIN1, AIN2, PWMA, leftOffset, STBY);
+Motor rightMotor(BIN1, BIN2, PWMB, rightOffset, STBY);
 
 int16_t baseSpeed = 125;
 float baseScaleFactor = 0.6;

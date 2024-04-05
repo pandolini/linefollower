@@ -4,8 +4,8 @@ fis = mamfis("Name", "LFR");
 fis = addInput(fis, [0, 140], "Name", "LinjePos");
 fis = addInput(fis, [0, 140], "Name", "DLinjePos");
 
-fis = addOutput(fis, [0, 1], "Name", "Kp");
-fis = addOutput(fis, [0, 1], "Name", "Kd");
+fis = addOutput(fis, [0, 100], "Name", "Kp");
+fis = addOutput(fis, [0, 100], "Name", "Kd");
 
 %% Input medlemsfunksjoner
 
@@ -29,20 +29,20 @@ figure();
 
 %% Output medlemsfunksjoner
 
-fis = addMF(fis, "Kp", "zmf", [0, 0.2], "Name", "XL");
-fis = addMF(fis, "Kp", "trapmf", [0, 0.2, 0.3, 0.4], "Name", "L");
-fis = addMF(fis, "Kp", "trapmf", [0.3, 0.4, 0.6, 0.7], "Name", "M");
-fis = addMF(fis, "Kp", "trapmf", [0.6, 0.7, 0.8, 1], "Name", "S");
-fis = addMF(fis, "Kp", "smf", [0.8, 1], "Name", "XS");
+fis = addMF(fis, "Kp", "zmf", [0, 20], "Name", "XL");
+fis = addMF(fis, "Kp", "trapmf", [0, 20, 30, 40], "Name", "L");
+fis = addMF(fis, "Kp", "trapmf", [30, 40, 60, 70], "Name", "M");
+fis = addMF(fis, "Kp", "trapmf", [60, 70, 80, 100], "Name", "S");
+fis = addMF(fis, "Kp", "smf", [80, 100], "Name", "XS");
 
 plotmf(fis, "output", 1);
 figure();
 
-fis = addMF(fis, "Kd", "zmf", [0, 0.2], "Name", "XL");
-fis = addMF(fis, "Kd", "trapmf", [0, 0.2, 0.3, 0.4], "Name", "L");
-fis = addMF(fis, "Kd", "trapmf", [0.3, 0.4, 0.6, 0.7], "Name", "M");
-fis = addMF(fis, "Kd", "trapmf", [0.6, 0.7, 0.8, 1], "Name", "S");
-fis = addMF(fis, "Kd", "smf", [0.8, 1], "Name", "XS");
+fis = addMF(fis, "Kd", "zmf", [0, 20], "Name", "XL");
+fis = addMF(fis, "Kd", "trapmf", [0, 20, 30, 40], "Name", "L");
+fis = addMF(fis, "Kd", "trapmf", [30, 40, 60, 70], "Name", "M");
+fis = addMF(fis, "Kd", "trapmf", [60, 70, 80, 100], "Name", "S");
+fis = addMF(fis, "Kd", "smf", [80, 100], "Name", "XS");
 
 plotmf(fis, "output", 2);
 figure();
@@ -97,7 +97,7 @@ LookUpTableDataKp = zeros(N);
 LookUpTableDataKd = zeros(N);
 for i=1:length(E)
    for j=1:length(CE)
-      output = round(evalfis(fis,[E(i) CE(j)]), 3);
+      output = round(evalfis(fis,[E(i) CE(j)]), 0);
       LookUpTableDataKp(i,j) = output(1);
       LookUpTableDataKd(i,j) = output(2);
    end

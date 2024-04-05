@@ -12,7 +12,6 @@ void loadFile(std::string fileName, std::vector<std::vector<int8_t>>* table) {
         Serial.println("Error loading table.csv");
         return;
     }
-
     while (file.available()) {
         std::vector<int8_t> row;
         auto line = file.readStringUntil(13);
@@ -37,8 +36,8 @@ void loadTable(std::vector<std::vector<int8_t>>* tableP, std::vector<std::vector
         return;
     }
 
-    loadFile("/tableP.csv", tableP);
-    loadFile("/tableD.csv", tableD);
+    loadFile("/tableKp.csv", tableP);
+    loadFile("/tableKd.csv", tableD);
 }
 
 #endif

@@ -14,10 +14,10 @@ int8_t Logic::getOutput(uint16_t linePosition) {
         deltaPosition = 0;
     }
 
-    Kp_ = lookupTableP[linePosition][deltaPosition]/1000;
-    Kd_ = lookupTableD[linePosition][deltaPosition]/1000;
+    Kp_ = (double)lookupTableP[linePosition][deltaPosition]/100;
+    Kd_ = (double)lookupTableD[linePosition][deltaPosition]/100;
 
-    proportional = linePosition;
+    proportional = linePosition - 70;
     derivative = linePosition - previousPosition;
     output = (proportional * Kp_) + (derivative * Kd_);
     
