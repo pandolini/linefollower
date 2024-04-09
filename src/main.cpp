@@ -1,11 +1,12 @@
 
 #include "Arduino.h"
 #include "Logic.hpp"
-#include "MotorControl.hpp"
+#include "MotorController.hpp"
 #include "Sensor.hpp"
 
 Sensor sensor;
 Logic logic;
+MotorController motorController(100, 200, -100, 1.0, 1.0);
 uint16_t linePosition;
 
 void setup() {
@@ -16,5 +17,5 @@ void setup() {
 void loop() {
     linePosition = sensor.getLinePosition();
     int16_t output = logic.getOutput(linePosition);
-    setMotors(output);
+    motorController.setMotors(output);
 }
