@@ -18,20 +18,26 @@ int8_t rightOffset = -1;
 Motor leftMotor(AIN1, AIN2, PWMA, leftOffset, STBY);
 Motor rightMotor(BIN1, BIN2, PWMB, rightOffset, STBY);
 
-int16_t baseSpeed = 125;
-float baseScaleFactor = 0.6;
+int16_t baseSpeed = 100;
+float baseScaleFactor = 1;
 float inputScaleFactor = 1.0;
 float leftWheelSpeed;
 float rightWheelSpeed;
 
-void setMotors(int8_t input) {
+void setMotors(int16_t input) {
     leftWheelSpeed = (int)(baseSpeed - inputScaleFactor*input)*baseScaleFactor;
     rightWheelSpeed = (int)(baseSpeed + inputScaleFactor*input)*baseScaleFactor;
-    if (leftWheelSpeed < 0) {
-        leftWheelSpeed = 0;
+    if (leftWheelSpeed < -100) {
+        leftWheelSpeed = -100;
     }
-    if (rightWheelSpeed < 0) {
-        rightWheelSpeed = 0;
+    if (rightWheelSpeed < -100) {
+        rightWheelSpeed = -100;
+    }
+    if (leftWheelSpeed > 200) {
+        leftWheelSpeed = 200;
+    }
+    if (rightWheelSpeed > 200) {
+        rightWheelSpeed = 200;
     }
     leftMotor.drive(leftWheelSpeed);
     rightMotor.drive(rightWheelSpeed);

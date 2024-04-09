@@ -8,18 +8,20 @@ void Logic::initialize() {
     deltaPosition = 0;
 }
 
-int8_t Logic::getOutput(uint16_t linePosition) {
+int16_t Logic::getOutput(int16_t linePosition) {
     deltaPosition = linePosition - previousPosition + deltaOffset;
     if (deltaPosition < 0) {
         deltaPosition = 0;
     }
 
-    Kp_ = (double)lookupTableP[linePosition][deltaPosition]/100;
-    Kd_ = (double)lookupTableD[linePosition][deltaPosition]/100;
+    //Kp_ = (double)lookupTableP[linePosition][deltaPosition]/100;
+    //Kd_ = (double)lookupTableD[linePosition][deltaPosition]/100;
+    Kp_ = 1.2;
+    Kd_ = 0;
 
     proportional = linePosition - 70;
     derivative = linePosition - previousPosition;
-    output = (proportional * Kp_) + (derivative * Kd_);
+    output = (int)(proportional * Kp_) + (derivative * Kd_);
     
     previousPosition = linePosition;
     
