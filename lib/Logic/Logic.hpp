@@ -9,20 +9,22 @@ class Logic {
 private:
     std::vector<std::vector<int8_t>> lookupTableP;
     std::vector<std::vector<int8_t>> lookupTableD;
-    int16_t previousPosition;
+    int16_t lastLinePosition;
     int16_t deltaPosition;
     const int16_t deltaOffset = 140;
-
-    int16_t proportional = 0;
-    int16_t derivative = 0;
-    int16_t output = 0;
+    const int16_t desiredLinePosition = 70;
+    int16_t proportionalError = 0;
+    int16_t derivativeError = 0;
+    int16_t controlOutput = 0;
     double Kp_;
     double Kd_;
+
+    int16_t constrainDeltaPosition(int16_t deltaPosition);
 
 public:
     void initialize();
 
-    int16_t getOutput(int16_t linePosition);
+    int16_t computeControlOutput(int16_t currentLinePosition);
 };
 
 #endif

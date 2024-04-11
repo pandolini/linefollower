@@ -16,6 +16,6 @@ void setup() {
 
 void loop() {
     linePosition = sensor.getLinePosition();
-    int16_t output = logic.getOutput(linePosition);
+    int16_t output = logic.computeControlOutput(linePosition);
     motorController.setMotors(output);
 }
