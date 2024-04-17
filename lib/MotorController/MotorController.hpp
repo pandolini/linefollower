@@ -6,7 +6,7 @@
 
 class MotorController {
 public:
-    MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed, float baseScaleFactor, float inputScaleFactor);
+    MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed);
 
     void setMotors(int16_t input);
 
@@ -27,8 +27,6 @@ private:
     int16_t baseSpeed_;
     int16_t maxSpeed_;
     int16_t minSpeed_;
-    float baseScaleFactor_;
-    float inputScaleFactor_;
     };
 
 #endif

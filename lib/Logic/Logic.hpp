@@ -6,6 +6,10 @@
 #include "vector"
 
 class Logic {
+public:
+    Logic(float outputGain);
+    int16_t computeCourseCorrection(int16_t currentLinePosition);
+
 private:
     std::vector<std::vector<int8_t>> lookupTableP;
     std::vector<std::vector<int8_t>> lookupTableD;
@@ -18,13 +22,8 @@ private:
     int16_t controlOutput = 0;
     double Kp_;
     double Kd_;
-
+    float outputGain_;
     int16_t constrainDeltaPosition(int16_t deltaPosition);
-
-public:
-    void initialize();
-
-    int16_t computeControlOutput(int16_t currentLinePosition);
 };
 
 #endif
