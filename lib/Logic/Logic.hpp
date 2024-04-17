@@ -9,12 +9,12 @@ class Logic {
 public:
     Logic(float outputGain);
     int16_t computeCourseCorrection(int16_t currentLinePosition);
+    int16_t deltaPosition(int16_t currentLinePosition);
 
 private:
     std::vector<std::vector<int8_t>> lookupTableP;
     std::vector<std::vector<int8_t>> lookupTableD;
-    int16_t lastLinePosition;
-    int16_t deltaPosition;
+    int16_t previousLinePosition;
     const int16_t deltaOffset = 140;
     const int16_t desiredLinePosition = 70;
     int16_t proportionalError = 0;
