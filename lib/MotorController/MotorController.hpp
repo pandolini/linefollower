@@ -10,7 +10,7 @@ public:
 
     void setMotors(int16_t input);
     void tractionControl(int16_t deltaPosition);
-
+    bool tractionMode;
 private:
     Motor leftMotor;
     Motor rightMotor;
@@ -33,7 +33,6 @@ private:
     int16_t upperLimit;
     int16_t lowerLimit;
     float tractionGain_;
-    bool tractionMode;
     int16_t tractionThreshold = 30;
     int16_t normalThreshold = 10;
     };

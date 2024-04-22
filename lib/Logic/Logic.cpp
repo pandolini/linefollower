@@ -21,6 +21,10 @@ int16_t Logic::computeCourseCorrection(int16_t currentLinePosition) {
     return controlOutput * outputGain_;
 }
 
+void Logic::setOutputGain(float outputGain) {
+    outputGain_ = outputGain;
+}
+
 int16_t Logic::deltaPosition(int16_t currentLinePosition) {
     return constrainDeltaPosition(currentLinePosition - previousLinePosition); //TODO removed deltaOffset, might break fuzzy
 }

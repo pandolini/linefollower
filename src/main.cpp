@@ -24,5 +24,8 @@ void loop() {
     int16_t output = logic.computeCourseCorrection(linePosition);
     int16_t deltaPosition = logic.deltaPosition(linePosition);
     motorController.tractionControl(deltaPosition);
+    if (motorController.tractionMode) {
+        logic.setOutputGain(outputGain / 2);
+    }
     motorController.setMotors(output);
 }

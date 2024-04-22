@@ -9,6 +9,7 @@ class Logic {
 public:
     Logic(float outputGain);
     int16_t computeCourseCorrection(int16_t currentLinePosition);
+    void setOutputGain(float outputGain);
     int16_t deltaPosition(int16_t currentLinePosition);
 
 private:
