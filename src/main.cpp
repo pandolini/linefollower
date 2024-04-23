@@ -4,16 +4,18 @@
 #include "MotorController.hpp"
 #include "Sensor.hpp"
 
-int16_t baseSpeed = 200;
-int16_t maxSpeed = 255;
-float outputGain = 2.0;
+int16_t baseSpeed = 160;
+int16_t maxSpeed = 180;
+int16_t minSpeed = -230;
+float outputGain = 1.0;
 
 Sensor sensor;
 Logic logic(outputGain);
-MotorController motorController(baseSpeed, maxSpeed);
+MotorController motorController(baseSpeed, maxSpeed, minSpeed);
 uint16_t linePosition;
 
 void setup() {
+    //logic.initializeFuzzylogic();
     sensor.calibrate();
 }
 
