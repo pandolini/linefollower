@@ -1,8 +1,8 @@
 
 #include "MotorController.hpp"
 
-MotorController::MotorController(int16_t baseSpeed, int16_t maxSpeed):
-baseSpeed_(baseSpeed), maxSpeed_(maxSpeed),
+MotorController::MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed):
+baseSpeed_(baseSpeed), maxSpeed_(maxSpeed), minSpeed_(minSpeed),
 leftMotor(AIN1, AIN2, PWMA, OFFSET, STBY), rightMotor(BIN1, BIN2, PWMB, OFFSET, STBY) 
 {
     previousTime_ = 0;
@@ -26,14 +26,13 @@ int16_t MotorController::constrainSpeed(int16_t speed) {
 }
 
 int16_t MotorController::constrainAcceleration(int16_t speed, bool isRightMotor) {
-    int16_t maxAcceleration = 10;
     int16_t previousSpeed = isRightMotor ? previousRightMotorSpeed_ : previousLeftMotorSpeed_;
 
-    if (abs(speed - previousSpeed) > maxAcceleration) {
+    if (abs(speed - previousSpeed) > maxAcceleration_) {
         if (speed > previousSpeed) {
-            speed = previousSpeed + maxAcceleration;
+            speed = previousSpeed + maxAcceleration_;
         } else {
-            speed = previousSpeed - maxAcceleration;
+            speed = previousSpeed - maxAcceleration_;
         }
     }
 
@@ -47,13 +46,12 @@ int16_t MotorController::constrainAcceleration(int16_t speed, bool isRightMotor)
 }
 
 int16_t MotorController::constrainTopSpeed(int16_t speed) {
-    int topSpeedTime_ = 5000;
     unsigned long deltaTime_ = time_ - previousTime_;
-    if (abs(speed) < 200) {
+    if (abs(speed) < maxSpeed_) {
         return speed;
     }
-    if (deltaTime_ > topSpeedTime_) {
-        speed * 0.5;
+    if (deltaTime_ > topSpeedDuration_) {
+        speed * 0.8;
         previousTime_ = time_;
     }
     return speed;

@@ -6,7 +6,7 @@
 
 class MotorController {
 public:
-    MotorController(int16_t baseSpeed, int16_t maxSpeed);
+    MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed);
 
     void setMotors(int16_t input);
     
@@ -28,11 +28,13 @@ private:
 
     int16_t baseSpeed_;
     int16_t maxSpeed_;
-    int16_t minSpeed_ = maxSpeed_ * (-1);
+    int16_t minSpeed_;
     int16_t previousRightMotorSpeed_;
     int16_t previousLeftMotorSpeed_;
     unsigned long time_ = millis();
     unsigned long previousTime_;
+    int16_t maxAcceleration_ = 10;
+    int topSpeedDuration_ = 5000;
     };
 
 #endif
