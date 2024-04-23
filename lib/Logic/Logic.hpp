@@ -8,6 +8,7 @@
 class Logic {
 public:
     Logic(float outputGain);
+    void initializeFuzzylogic();
     int16_t computeCourseCorrection(int16_t currentLinePosition);
     int16_t deltaPosition(int16_t currentLinePosition);
 

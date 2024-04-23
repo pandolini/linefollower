@@ -3,15 +3,18 @@
 #include "TableLoader.hpp"
 
 Logic::Logic(float outputGain): outputGain_(outputGain) {
-    loadTable(&lookupTableP, &lookupTableD);
     previousLinePosition = desiredLinePosition;
+}
+
+void Logic::initializeFuzzylogic() {
+    loadTable(&lookupTableP, &lookupTableD);
 }
 
 int16_t Logic::computeCourseCorrection(int16_t currentLinePosition) {
     //Kp_ = (double)lookupTableP[currentLinePosition][deltaPosition(currentLinePosition)]/100;
     //Kd_ = (double)lookupTableD[currentLinePosition][deltaPosition(currentLinePosition)]/100;
-    Kp_ = 3.0;
-    Kd_ = 6.0;
+    Kp_ = 4.5;
+    Kd_ = 6.5;
 
     proportionalError = currentLinePosition - desiredLinePosition;
     derivativeError = currentLinePosition - previousLinePosition;
@@ -22,7 +25,7 @@ int16_t Logic::computeCourseCorrection(int16_t currentLinePosition) {
 }
 
 int16_t Logic::deltaPosition(int16_t currentLinePosition) {
-    return constrainDeltaPosition(currentLinePosition - previousLinePosition); //TODO removed deltaOffset, might break fuzzy
+    return constrainDeltaPosition(currentLinePosition - previousLinePosition + deltaOffset);
 }
 
 int16_t Logic::constrainDeltaPosition(int16_t deltaPosition) {
