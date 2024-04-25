@@ -24,7 +24,7 @@ void setup() {
     //logic.initializeFuzzylogic();
     sensor.calibrate();
     webserver.connectWiFi();
-    webserver.setupServer(logic);
+    webserver.setupServer(logic, motorController);
     webserver.setupOTA();
 }
 
