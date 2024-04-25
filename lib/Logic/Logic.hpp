@@ -19,6 +19,9 @@ public:
     void setKp(double Kp);
     void setKd(double Kd);
     void setKi(double Ki);
+    double getKp() const;
+    double getKd() const;
+    double getKi() const;
 
 private:
     std::vector<std::vector<int8_t>> lookupTableP;

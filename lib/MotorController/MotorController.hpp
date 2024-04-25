@@ -12,6 +12,9 @@ public:
     void setBaseSpeed(int16_t baseSpeed);
     void setMaxSpeed(int16_t maxSpeed);
     void setMinSpeed(int16_t minSpeed);
+    int getBaseSpeed() const;
+    int getMaxSpeed() const;
+    int getMinSpeed() const;
     void enableMotors();
     void disableMotors();
     

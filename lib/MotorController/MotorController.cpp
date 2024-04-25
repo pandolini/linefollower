@@ -31,14 +31,26 @@ void MotorController::setMinSpeed(int16_t minSpeed) {
     minSpeed_ = minSpeed;
 }
 
+int MotorController::getBaseSpeed() const {
+    return baseSpeed_;
+}
+
+int MotorController::getMaxSpeed() const {
+    return maxSpeed_;
+}
+
+int MotorController::getMinSpeed() const {
+    return minSpeed_;
+}
+
 void MotorController::enableMotors() {
     motorsEnabled_ = true;
 }
 
 void MotorController::disableMotors() {
     motorsEnabled_ = false;
-    leftMotor.brake();
     delay(100);
+    leftMotor.brake();
     rightMotor.brake();
 }
 

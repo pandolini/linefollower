@@ -60,3 +60,15 @@ void Logic::setKd(double Kd) {
 void Logic::setKi(double Ki) {
     Ki_ = Ki;
 }
+
+double Logic::getKp() const {
+    return Kp_;
+}
+
+double Logic::getKd() const {
+    return Kd_;
+}
+
+double Logic::getKi() const {
+    return Ki_;
+}
