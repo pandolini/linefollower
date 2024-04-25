@@ -35,6 +35,8 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
             <input type="submit" value="Submit">
             <button id="saveButton">Save</button>
             <button id="downloadButton">Download</button>
+            <button id="purgeLogButton">Purge Log Files</button>
+            <button id="purgeMasterLogButton">Purge Master Log File</button>
         </form>
         <button id="startMotorsButton" style="background-color: green;">Start Motors</button>
         <button id="stopMotorsButton" style="background-color: red;">Stop Motors</button>
@@ -69,6 +71,16 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
             document.getElementById('downloadButton').addEventListener('click', function() {
                 var time = document.getElementById('time').value;
                 window.location.href = '/get_file?time=' + time;
+            });
+            document.getElementById('purgeLogButton').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/purge_log', true);
+            xhr.send();
+            });
+            document.getElementById('purgeMasterLogButton').addEventListener('click', function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/purge_master_log', true);
+                xhr.send();
             });
         </script>
     )";
@@ -112,20 +124,31 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
     server_.on("/save_params", HTTP_GET, [&logic, &motorController](AsyncWebServerRequest* request) {
         String time = request->getParam("time")->value();
         String filename = "/test_log_" + time + ".txt";
+        String masterFilename = "/test_log_master.txt";
+        File fileList = SPIFFS.open("/file_list.txt", "a");
+            if (!fileList) {
+                request->send(500, "text/plain", "Failed to open file list for writing");
+                return;
+            }
+            fileList.println(filename);
+            fileList.close();
         File file = SPIFFS.open(filename, "w");
-        if (!file) {
+        File masterFile = SPIFFS.open(masterFilename, "a");
+        if (!file || !masterFile) {
             request->send(500, "text/plain", "Failed to open file for writing");
             return;
         }
-        file.println("Time: " + time);
-        file.println();
-        file.println("Kp: " + String(logic.getKp()));
-        file.println("Kd: " + String(logic.getKd()));
-        file.println("Ki: " + String(logic.getKi()));
-        file.println("Base speed: " + String(motorController.getBaseSpeed()));
-        file.println("Max speed: " + String(motorController.getMaxSpeed()));
-        file.println("Min speed: " + String(motorController.getMinSpeed()));
+        String log = "Time: " + time + "\n\n"
+                    + "Kp: " + String(logic.getKp()) + "\n"
+                    + "Kd: " + String(logic.getKd()) + "\n"
+                    + "Ki: " + String(logic.getKi()) + "\n"
+                    + "Base speed: " + String(motorController.getBaseSpeed()) + "\n"
+                    + "Max speed: " + String(motorController.getMaxSpeed()) + "\n"
+                    + "Min speed: " + String(motorController.getMinSpeed()) + "\n\n";
+        file.print(log);
+        masterFile.print(log);
         file.close();
+        masterFile.close();
         request->send(200);
     });
 
@@ -137,6 +160,34 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
         } else {
             request->send(404, "text/plain", "File not found");
         }
+    });
+
+    server_.on("/purge_log", HTTP_GET, [](AsyncWebServerRequest* request) {
+        File fileList = SPIFFS.open("/file_list.txt", "r");
+        if (!fileList) {
+            request->send(500, "text/plain", "Failed to open file list for reading");
+            return;
+        }
+        while (fileList.available()) {
+            String filename = fileList.readStringUntil('\n');
+            filename.trim();
+            if (!SPIFFS.remove(filename)) {
+                request->send(500, "text/plain", "Failed to purge log file: " + filename);
+                return;
+            }
+        }
+        fileList.close();
+        SPIFFS.remove("/file_list.txt");
+        request->send(200, "text/plain", "Log files purged successfully");
+    });
+
+    server_.on("/purge_master_log", HTTP_GET, [](AsyncWebServerRequest* request) {
+        String masterFilename = "/test_log_master.txt";
+        if (!SPIFFS.remove(masterFilename)) {
+            request->send(500, "text/plain", "Failed to purge master log file");
+            return;
+        }
+        request->send(200, "text/plain", "Master log file purged successfully");
     });
 
     server_.on("/stop_motors", HTTP_GET, [&motorController](AsyncWebServerRequest* request) {
