@@ -9,6 +9,9 @@ public:
     MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed);
 
     void setMotors(int16_t input);
+    void setBaseSpeed(int16_t baseSpeed);
+    void setMaxSpeed(int16_t maxSpeed);
+    void setMinSpeed(int16_t minSpeed);
     
 private:
     Motor leftMotor;

@@ -1,7 +1,7 @@
 
 #include "MotorController.hpp"
 
-MotorController::MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed):
+MotorController::MotorController(int16_t baseSpeed, int16_t maxSpeed, int16_t minSpeed): 
 baseSpeed_(baseSpeed), maxSpeed_(maxSpeed), minSpeed_(minSpeed),
 leftMotor(AIN1, AIN2, PWMA, OFFSET, STBY), rightMotor(BIN1, BIN2, PWMB, OFFSET, STBY) 
 {
@@ -9,10 +9,22 @@ leftMotor(AIN1, AIN2, PWMA, OFFSET, STBY), rightMotor(BIN1, BIN2, PWMB, OFFSET, 
 }
 
 void MotorController::setMotors(int16_t input) {
-    int16_t rightMotorSpeed = constrainSpeed(constrainTopSpeed(baseSpeed_ + input));
-    int16_t leftMotorSpeed = constrainSpeed(constrainTopSpeed(baseSpeed_ - input));
+    int16_t rightMotorSpeed = constrainSpeed(baseSpeed_ + input);
+    int16_t leftMotorSpeed = constrainSpeed(baseSpeed_ - input);
     leftMotor.drive(leftMotorSpeed);
     rightMotor.drive(rightMotorSpeed);
+}
+
+void MotorController::setBaseSpeed(int16_t baseSpeed) {
+    baseSpeed_ = baseSpeed;
+}
+
+void MotorController::setMaxSpeed(int16_t maxSpeed) {
+    maxSpeed_ = maxSpeed;
+}
+
+void MotorController::setMinSpeed(int16_t minSpeed) {
+    minSpeed_ = minSpeed;
 }
 
 int16_t MotorController::constrainSpeed(int16_t speed) {
