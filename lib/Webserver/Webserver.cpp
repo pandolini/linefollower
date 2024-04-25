@@ -1,8 +1,12 @@
 
 #include "Webserver.hpp"
+#include <FS.h>
+#include <SPIFFS.h>
 
 Webserver::Webserver(const char* ssid, const char* password)
-    : ssid_(ssid), password_(password), server_(80) {}
+    : ssid_(ssid), password_(password), server_(80) {
+    SPIFFS.begin();
+}
 
 void Webserver::connectWiFi() {
     WiFi.begin(ssid_, password_);
@@ -27,7 +31,10 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
                       String(motorController.getMaxSpeed()) + R"("><br>
             Min speed: <input type="text" name="minSpeed" value=")" +
                       String(motorController.getMinSpeed()) + R"("><br>
+            Time: <input type="text" id="time" name="time" value=""><br>
             <input type="submit" value="Submit">
+            <button id="saveButton">Save</button>
+            <button id="downloadButton">Download</button>
         </form>
         <button id="startMotorsButton" style="background-color: green;">Start Motors</button>
         <button id="stopMotorsButton" style="background-color: red;">Stop Motors</button>
@@ -53,6 +60,15 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', '/reset_errors', true);
                 xhr.send();
+            });
+            document.getElementById('saveButton').addEventListener('click', function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/save_params?' + new URLSearchParams(new FormData(document.getElementById('paramsForm'))).toString(), true);
+                xhr.send();
+            });
+            document.getElementById('downloadButton').addEventListener('click', function() {
+                var time = document.getElementById('time').value;
+                window.location.href = '/get_file?time=' + time;
             });
         </script>
     )";
@@ -91,6 +107,36 @@ void Webserver::setupServer(Logic& logic, MotorController& motorController) {
         json += "\"minSpeed\":" + String(motorController.getMinSpeed());
         json += "}";
         request->send(200, "application/json", json);
+    });
+
+    server_.on("/save_params", HTTP_GET, [&logic, &motorController](AsyncWebServerRequest* request) {
+        String time = request->getParam("time")->value();
+        String filename = "/test_log_" + time + ".txt";
+        File file = SPIFFS.open(filename, "w");
+        if (!file) {
+            request->send(500, "text/plain", "Failed to open file for writing");
+            return;
+        }
+        file.println("Time: " + time);
+        file.println();
+        file.println("Kp: " + String(logic.getKp()));
+        file.println("Kd: " + String(logic.getKd()));
+        file.println("Ki: " + String(logic.getKi()));
+        file.println("Base speed: " + String(motorController.getBaseSpeed()));
+        file.println("Max speed: " + String(motorController.getMaxSpeed()));
+        file.println("Min speed: " + String(motorController.getMinSpeed()));
+        file.close();
+        request->send(200);
+    });
+
+    server_.on("/get_file", HTTP_GET, [](AsyncWebServerRequest* request) {
+        String time = request->getParam("time")->value();
+        String filename = "/test_log_" + time + ".txt";
+        if (SPIFFS.exists(filename)) {
+            request->send(SPIFFS, filename, "application/octet-stream");
+        } else {
+            request->send(404, "text/plain", "File not found");
+        }
     });
 
     server_.on("/stop_motors", HTTP_GET, [&motorController](AsyncWebServerRequest* request) {
