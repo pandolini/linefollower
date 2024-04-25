@@ -11,7 +11,8 @@ public:
     int16_t computeCourseCorrection(int16_t currentLinePosition);
     int16_t deltaPosition(int16_t currentLinePosition);
     void updateDesiredLineposition(int16_t currentLinePosition);
-    
+    void resetErrors();
+
     void initializeFuzzylogic();
     void updateFuzzyParameters(int16_t currentLinePosition);
 

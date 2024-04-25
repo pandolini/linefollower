@@ -34,6 +34,12 @@ void Logic::updateDesiredLineposition(int16_t currentLinePosition) {
     }
 }
 
+void Logic::resetErrors() {
+    proportionalError = 0;
+    derivativeError = 0;
+    integralError = 0;
+}
+
 void Logic::initializeFuzzylogic() {
     loadTable(&lookupTableP, &lookupTableD);
 }
