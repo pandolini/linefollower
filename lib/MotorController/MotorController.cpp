@@ -6,9 +6,13 @@ baseSpeed_(baseSpeed), maxSpeed_(maxSpeed), minSpeed_(minSpeed),
 leftMotor(AIN1, AIN2, PWMA, OFFSET, STBY), rightMotor(BIN1, BIN2, PWMB, OFFSET, STBY) 
 {
     previousTime_ = 0;
+    motorsEnabled_ = true;
 }
 
 void MotorController::setMotors(int16_t input) {
+    if (!motorsEnabled_) {
+        return;
+    }
     int16_t rightMotorSpeed = constrainSpeed(baseSpeed_ + input);
     int16_t leftMotorSpeed = constrainSpeed(baseSpeed_ - input);
     leftMotor.drive(leftMotorSpeed);
@@ -25,6 +29,17 @@ void MotorController::setMaxSpeed(int16_t maxSpeed) {
 
 void MotorController::setMinSpeed(int16_t minSpeed) {
     minSpeed_ = minSpeed;
+}
+
+void MotorController::enableMotors() {
+    motorsEnabled_ = true;
+}
+
+void MotorController::disableMotors() {
+    motorsEnabled_ = false;
+    leftMotor.brake();
+    delay(100);
+    rightMotor.brake();
 }
 
 int16_t MotorController::constrainSpeed(int16_t speed) {

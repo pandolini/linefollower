@@ -12,6 +12,8 @@ public:
     void setBaseSpeed(int16_t baseSpeed);
     void setMaxSpeed(int16_t maxSpeed);
     void setMinSpeed(int16_t minSpeed);
+    void enableMotors();
+    void disableMotors();
     
 private:
     Motor leftMotor;
@@ -29,6 +31,7 @@ private:
     static const int8_t STBY = 101; //Not in use
     static const int8_t OFFSET = -1;
 
+    bool motorsEnabled_;
     int16_t baseSpeed_;
     int16_t maxSpeed_;
     int16_t minSpeed_;
