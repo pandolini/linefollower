@@ -24,16 +24,6 @@ int16_t Logic::constrainDeltaPosition(int16_t deltaPosition) {
     return deltaPosition < 0 ? 0 : deltaPosition;
 }
 
-void Logic::updateDesiredLineposition(int16_t currentLinePosition) {
-    if (currentLinePosition < 50) {
-        desiredLinePosition = 50 + (70 - 50) * ((currentLinePosition - 50) / 20.0);
-    } else if (currentLinePosition > 90) {
-        desiredLinePosition = 70 + (90 - 70) * ((currentLinePosition - 90) / 20.0);
-    } else {
-        desiredLinePosition = 70;
-    }
-}
-
 void Logic::resetErrors() {
     proportionalError = 0;
     derivativeError = 0;
@@ -47,28 +37,4 @@ void Logic::initializeFuzzylogic() {
 void Logic::updateFuzzyParameters(int16_t currentLinePosition) {
     setKp((double) lookupTableP[currentLinePosition][deltaPosition(currentLinePosition)] / 100);
     setKd((double) lookupTableD[currentLinePosition][deltaPosition(currentLinePosition)] / 100);
-}
-
-void Logic::setKp(double Kp) {
-    Kp_ = Kp;
-}
-
-void Logic::setKd(double Kd) {
-    Kd_ = Kd;
-}
-
-void Logic::setKi(double Ki) {
-    Ki_ = Ki;
-}
-
-double Logic::getKp() const {
-    return Kp_;
-}
-
-double Logic::getKd() const {
-    return Kd_;
-}
-
-double Logic::getKi() const {
-    return Ki_;
 }
