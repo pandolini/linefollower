@@ -1,0 +1,54 @@
+Time: 19.85
+
+Kp: 9.75
+Kd: 22.00
+Ki: 0.00
+Base speed: 150
+Max speed: 220
+Min speed: -50
+
+Time: 18
+
+Kp: 10.00
+Kd: 50.00
+Ki: 0.00
+Base speed: 140
+Max speed: 255
+Min speed: -100
+
+Time: 17
+
+Kp: 10.00
+Kd: 50.00
+Ki: 0.00
+Base speed: 160
+Max speed: 255
+Min speed: -100
+
+Time: 14
+
+Kp: 10.00
+Kd: 50.00
+Ki: 0.00
+Base speed: 170
+Max speed: 255
+Min speed: -90
+
+Time: 12.81
+
+Kp: 10.00
+Kd: 60.00
+Ki: 0.00
+Base speed: 200
+Max speed: 255
+Min speed: -110
+
+Time: 12.15
+
+Kp: 10.00
+Kd: 63.00
+Ki: 0.00
+Base speed: 210
+Max speed: 255
+Min speed: -115
+

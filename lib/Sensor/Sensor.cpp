@@ -7,11 +7,11 @@ Sensor::Sensor() {
 }
 
 void Sensor::calibrate() {
-    for (uint16_t i = 0; i < 300; i++) {
+    for (unsigned short i = 0; i < 300; i++) {
         qtr.calibrate();
     }
 }
 
-uint16_t Sensor::getLinePosition() {
+unsigned short Sensor::getLinePosition() {
     return qtr.readLineBlack(sensorValues) / 100;
 }

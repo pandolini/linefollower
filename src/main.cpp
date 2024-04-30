@@ -5,31 +5,31 @@
 #include "Sensor.hpp"
 #include "Webserver.hpp"
 
-float baseSpeed = 200;
-float maxSpeed = 255;
-float minSpeed = -110;
+short baseSpeed = 200;
+short maxSpeed = 255;
+short minSpeed = -110;
 
-double Kp = 10.00;
-double Kd = 60.00;
-double Ki = 0;
+float Kp = 10.0;
+float Kd = 60.0;
+float Ki = 0;
 float outputGain = 1.0;
 
 Sensor sensor;
 Logic logic(Kp, Kd, Ki, outputGain);
 MotorController motorController(baseSpeed, maxSpeed, minSpeed);
 Webserver webserver("iPhone", "Qwefgh123");
-uint16_t linePosition;
+unsigned short linePosition;
 
 void setup() {
     sensor.calibrate();
     webserver.connectWiFi();
     webserver.setupServer(logic, motorController);
-    webserver.setupOTA();
+    // webserver.setupOTA();
 }
 
 void loop() {
-    webserver.handleOTA();
+    // webserver.handleOTA();
     linePosition = sensor.getLinePosition();
-    int16_t output = logic.computeCourseCorrection(linePosition);
+    short output = logic.computeCourseCorrection(linePosition);
     motorController.setMotors(output);
 }

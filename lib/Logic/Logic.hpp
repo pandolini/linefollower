@@ -1,43 +1,31 @@
 
-#ifndef LINEFOLLOWER_LOGIC_HPP
-#define LINEFOLLOWER_LOGIC_HPP
-
-#include "Arduino.h"
-#include "vector"
+#ifndef LOGIC_HPP
+#define LOGIC_HPP
 
 class Logic {
 public:
-    Logic(double Kp, double Kd, double Ki, float outputGain);
-    int16_t computeCourseCorrection(int16_t currentLinePosition);
-    int16_t deltaPosition(int16_t currentLinePosition);
+    Logic(float Kp, float Kd, float Ki, float outputGain);
+    short computeCourseCorrection(unsigned short currentLinePosition);
     void resetErrors();
 
-    void initializeFuzzylogic();
-    void updateFuzzyParameters(int16_t currentLinePosition);
-
-    void setKp(double Kp) { Kp_ = Kp; }
-    void setKd(double Kd) { Kd_ = Kd; }
-    void setKi(double Ki) { Ki_ = Ki; }
-    double getKp() const { return Kp_; }
-    double getKd() const { return Kd_; }
-    double getKi() const { return Ki_; }
+    void setKp(float Kp) { Kp_ = Kp; }
+    void setKd(float Kd) { Kd_ = Kd; }
+    void setKi(float Ki) { Ki_ = Ki; }
+    float getKp() const { return Kp_; }
+    float getKd() const { return Kd_; }
+    float getKi() const { return Ki_; }
 
 private:
-    std::vector<std::vector<int8_t>> lookupTableP;
-    std::vector<std::vector<int8_t>> lookupTableD;
-    const int16_t deltaOffset = 140;
-    int16_t previousLinePosition;
-    int16_t desiredLinePosition = 70;
-    double proportionalError = 0;
-    double derivativeError = 0;
-    double integralError = 0;
-    int16_t controlOutput = 0;
-    double Kp_;
-    double Kd_;
-    double Ki_;
+    unsigned short previousLinePosition_;
+    const unsigned short desiredLinePosition_;
+    float proportionalError_;
+    float derivativeError_;
+    float integralError_;
+    short controlOutput_;
+    float Kp_;
+    float Kd_;
+    float Ki_;
     float outputGain_;
-
-    int16_t constrainDeltaPosition(int16_t deltaPosition);
 };
 
 #endif
