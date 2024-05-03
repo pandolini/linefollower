@@ -1,23 +1,20 @@
 
-#ifndef LINEFOLLOWER_SENSOR_HPP
-#define LINEFOLLOWER_SENSOR_HPP
+#ifndef SENSOR_HPP
+#define SENSOR_HPP
 
-#include "QTRSensors.h"
-#include "Arduino.h"
+#include <QTRSensors.h>
 
 class Sensor {
-private:
-    QTRSensors qtr;
-    const uint8_t SENSOR_COUNT = 15;
-    uint16_t sensorValues[15];
-    const uint8_t PINS[15] = {5, 14, 13, 25, 16, 17, 18, 19, 21, 22, 23, 26, 27, 32, 33};
-
 public:
-    void initialize();
-
+    Sensor();
+    unsigned short getLinePosition();
     void calibrate();
 
-    uint16_t getPos();
+private:
+    QTRSensors qtr;
+    static const unsigned char sensorCount = 15;
+    unsigned short sensorValues[sensorCount];
+    const unsigned char sensorPins[sensorCount] = {23, 22, 21, 19, 18, 17, 5, 25, 16, 33, 32, 26, 27, 14, 13};
 };
 
 #endif

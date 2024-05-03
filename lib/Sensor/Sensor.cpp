@@ -1,24 +1,17 @@
 
 #include "Sensor.hpp"
 
-void Sensor::initialize() {
-    for (auto&& pin : PINS) {
-        pinMode(pin, INPUT);
-    }
-
+Sensor::Sensor() {
     qtr.setTypeRC();
-    qtr.setSensorPins(PINS, SENSOR_COUNT);
-
-    calibrate();
+    qtr.setSensorPins(sensorPins, sensorCount);
 }
 
 void Sensor::calibrate() {
-    for (uint16_t i = 0; i < 400; i++)// Calibration loop (400 iterations)
-    {
+    for (unsigned short i = 0; i < 300; i++) {
         qtr.calibrate();
     }
 }
 
-uint16_t Sensor::getPos() {
+unsigned short Sensor::getLinePosition() {
     return qtr.readLineBlack(sensorValues) / 100;
 }

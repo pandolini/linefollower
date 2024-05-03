@@ -1,18 +1,22 @@
 
 #include "Logic.hpp"
-#include "TableLoader.hpp"
 
-void Logic::initialize() {
-    loadTable(&lookupTable);
-    previousPosition = 70;
-    deltaPosition = 0;
+Logic::Logic(float Kp, float Kd, float Ki, float outputGain): Kp_(Kp), Kd_(Kd), Ki_(Ki), outputGain_(outputGain), desiredLinePosition_(70) {
+    previousLinePosition_ = desiredLinePosition_;
 }
 
-int8_t Logic::getOutput(uint16_t linePosition) {
-    deltaPosition = linePosition - previousPosition + deltaOffset;
-    if (deltaPosition < 0) {
-        deltaPosition = 0;
-    }
-    previousPosition = linePosition;
-    return lookupTable[linePosition][deltaPosition];
+short Logic::computeCourseCorrection(unsigned short currentLinePosition) {
+    proportionalError_ = currentLinePosition - desiredLinePosition_;
+    derivativeError_ = currentLinePosition - previousLinePosition_;
+    integralError_ += proportionalError_;
+    controlOutput_ = (proportionalError_ * Kp_) + (derivativeError_ * Kd_) + (integralError_ * Ki_);
+    previousLinePosition_ = currentLinePosition;
+
+    return controlOutput_ * outputGain_;
+}
+
+void Logic::resetErrors() {
+    proportionalError_ = 0;
+    derivativeError_ = 0;
+    integralError_ = 0;
 }
