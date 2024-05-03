@@ -9,7 +9,7 @@ short Logic::computeCourseCorrection(unsigned short currentLinePosition) {
     proportionalError_ = currentLinePosition - desiredLinePosition_;
     derivativeError_ = currentLinePosition - previousLinePosition_;
     integralError_ += proportionalError_;
-    controlOutput_ = (int) (proportionalError_ * Kp_) + (derivativeError_ * Kd_) + (integralError_ * Ki_);
+    controlOutput_ = (proportionalError_ * Kp_) + (derivativeError_ * Kd_) + (integralError_ * Ki_);
     previousLinePosition_ = currentLinePosition;
 
     return controlOutput_ * outputGain_;

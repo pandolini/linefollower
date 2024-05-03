@@ -5,12 +5,12 @@
 #include "Sensor.hpp"
 #include "Webserver.hpp"
 
-short baseSpeed = 200;
+short baseSpeed = 210;
 short maxSpeed = 255;
-short minSpeed = -110;
+short minSpeed = -115;
 
 float Kp = 10.0;
-float Kd = 60.0;
+float Kd = 62.0;
 float Ki = 0;
 float outputGain = 1.0;
 

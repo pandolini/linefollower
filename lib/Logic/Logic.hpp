@@ -18,9 +18,9 @@ public:
 private:
     unsigned short previousLinePosition_;
     const unsigned short desiredLinePosition_;
-    float proportionalError_;
-    float derivativeError_;
-    float integralError_;
+    short proportionalError_;
+    short derivativeError_;
+    short integralError_;
     short controlOutput_;
     float Kp_;
     float Kd_;

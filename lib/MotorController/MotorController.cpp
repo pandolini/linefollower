@@ -14,8 +14,8 @@ void MotorController::setMotors(short input) {
     }
     short rightMotorSpeed = constrainSpeed(baseSpeed_ + input);
     short leftMotorSpeed = constrainSpeed(baseSpeed_ - input);
-    leftMotor.drive(leftMotorSpeed);
-    rightMotor.drive(rightMotorSpeed);
+    leftMotor.drive(leftMotorSpeed * (-1));
+    rightMotor.drive(rightMotorSpeed * (-1));
 }
 
 void MotorController::enableMotors() {
