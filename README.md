@@ -9,10 +9,6 @@
 - Ability to start and stop the robot's engines through the webserver, which is especially useful for emergency braking.
 - A system for saving good parameters to the flash of the ESP32, with the possibility to download them to the machine accessing the webserver.
 
-## License
-
-This project is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](LICENSE). This means you are free to use, share, and modify this project, but you must give appropriate credit, provide a link to the license, and indicate if changes were made. You may not use this project for commercial purposes without prior permission.
-
 ## Changelog
 
 - v1.0.0: Implements a basic control system for the MK2 robot, utilizing a straightforward PID controller.
